@@ -1,3 +1,6 @@
+from typing import Union
+
+from flask import Blueprint
 from flask import Flask
 from patabase.postgres import Database
 
@@ -5,7 +8,7 @@ from patabase.postgres import Database
 class Feghal(object):
     _db = None
 
-    def __init__(self, app: Flask):
+    def __init__(self, app: Union[Flask, Blueprint]):
         self._db = Database(
             host=app.config['POSTGRES_HOST'],
             user=app.config['POSTGRES_USER'],
