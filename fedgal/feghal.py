@@ -2,18 +2,25 @@ from typing import Union
 
 from flask import Blueprint
 from flask import Flask
+from flask import current_app
 from patabase.postgres import Database
 
 
 class Feghal(object):
     _db = None
 
-    def __init__(self, app: Union[Flask, Blueprint]):
+    def __init__(self, app: Union[Flask, Blueprint] = None):
+        self.app = app
+        if app is not None:
+            self.init_app(app)
+
+    def init_app(self, app: Union[Flask, Blueprint]) -> None:
+        self.app = app
         self._db = Database(
-            host=app.config['POSTGRES_HOST'],
-            user=app.config['POSTGRES_USER'],
-            password=app.config['POSTGRES_PASS'],
-            database=app.config['POSTGRES_APP_DATABASE']
+            host=current_app.config['POSTGRES_HOST'],
+            user=current_app.config['POSTGRES_USER'],
+            password=current_app.config['POSTGRES_PASS'],
+            database=current_app.config['POSTGRES_APP_DATABASE']
         )
 
     def add(self, table: str, **parameters: any) -> None:
