@@ -8,7 +8,7 @@ from flask import current_app
 from patabase import Postgres
 
 
-class Feghal(object):
+class Fedgal(object):
     _app: Union[Flask, Blueprint]
 
     def __init__(self, app: Union[Flask, Blueprint] = None):
