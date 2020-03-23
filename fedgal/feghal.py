@@ -8,16 +8,17 @@ from patabase import Postgres
 
 
 class Feghal(object):
+    _app: Union[Flask, Blueprint]
+
     def __init__(self, app: Union[Flask, Blueprint] = None):
-        self.app = app
         if app is not None:
             self.init_app(app)
 
     def init_app(self, app: Union[Flask, Blueprint]) -> None:
-        self.app = app
+        self._app = app
 
     @property
-    def db(self) -> Postgres:
+    def _db(self) -> Postgres:
         ctx = _app_ctx_stack.top
         if ctx is not None:
             if not hasattr(ctx, 'patabase_app_connection'):
@@ -36,7 +37,7 @@ class Feghal(object):
             values ({', '.join(placeholders)})
         '''
 
-        self.db.perform(sql, *parameters.values())
+        self._db.perform(sql, *parameters.values())
 
     def edit(self, table: str, pk: int, **parameters: any) -> None:
         fields = [f'{key} = %s' for key in parameters if parameters[key]]
@@ -48,7 +49,7 @@ class Feghal(object):
             where id = %s
         '''
 
-        self.db.perform(sql, *values, pk)  # TODO: check if "pk" exists
+        self._db.perform(sql, *values, pk)  # TODO: check if "pk" exists
 
     def delete(self, table: str, pk: int) -> None:
         sql = f'''
@@ -57,7 +58,7 @@ class Feghal(object):
             where id = %s
         '''
 
-        self.db.perform(sql, pk)  # TODO: check if "pk" exists
+        self._db.perform(sql, pk)  # TODO: check if "pk" exists
 
     def list(self, table: str, user_id: int = None) -> list:
         sql = f'''
@@ -68,7 +69,7 @@ class Feghal(object):
         if user_id:
             sql += f' where {user_id} = any(user_ids)'
 
-        return list(self.db.select(sql))
+        return list(self._db.select(sql))
 
     def get(self, table: str, pk: int, user_id: int = None) -> dict:
         sql = f'''
@@ -80,7 +81,7 @@ class Feghal(object):
         if user_id:
             sql += f' and {user_id} = any(user_ids)'
 
-        return next(self.db.select(sql, pk), dict())
+        return next(self._db.select(sql, pk), dict())
 
     def query(self, table: str, q: str, fields: list, user_id: int = None) -> list:
         filters = [f"{key}::varchar like %s" for key in fields]
@@ -95,16 +96,16 @@ class Feghal(object):
         if user_id:
             sql += f' and {user_id} = any(user_ids)'
 
-        return list(self.db.select(sql, *values))
+        return list(self._db.select(sql, *values))
 
     def perform(self, sql: str, *args: any) -> int:
-        return self.db.perform(sql, *args)
+        return self._db.perform(sql, *args)
 
     def select(self, sql: str, *args: any) -> iter:
-        return self.db.select(sql, *args)
+        return self._db.select(sql, *args)
 
     def procedure(self, func_name: str, **parameters: any) -> int:
-        return self.db.procedure(func_name, **parameters)
+        return self._db.procedure(func_name, **parameters)
 
     def function(self, func_name: str, **parameters: any) -> iter:
-        return self.db.function(func_name, **parameters)
+        return self._db.function(func_name, **parameters)
