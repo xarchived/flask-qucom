@@ -1,10 +1,7 @@
 from typing import Union
 
-from flask import Blueprint
-from flask import Flask
 # noinspection PyProtectedMember
-from flask import _app_ctx_stack
-from flask import current_app
+from flask import Blueprint, Flask, _app_ctx_stack, current_app
 from patabase import Postgres
 
 
