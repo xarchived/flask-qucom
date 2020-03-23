@@ -2,13 +2,12 @@ from typing import Union
 
 from flask import Blueprint
 from flask import Flask
+from flask import _app_ctx_stack
 from flask import current_app
 from patabase import Postgres
 
 
 class Feghal(object):
-    db: Postgres = None
-
     def __init__(self, app: Union[Flask, Blueprint] = None):
         self.app = app
         if app is not None:
@@ -16,12 +15,18 @@ class Feghal(object):
 
     def init_app(self, app: Union[Flask, Blueprint]) -> None:
         self.app = app
-        self.db = Postgres(
-            host=current_app.config['POSTGRES_HOST'],
-            user=current_app.config['POSTGRES_USER'],
-            password=current_app.config['POSTGRES_PASS'],
-            database=current_app.config['POSTGRES_APP_DATABASE']
-        )
+
+    @property
+    def db(self) -> Postgres:
+        ctx = _app_ctx_stack.top
+        if ctx is not None:
+            if not hasattr(ctx, 'patabase_app_connection'):
+                ctx.patabase_app_connection = Postgres(
+                    host=current_app.config['POSTGRES_HOST'],
+                    user=current_app.config['POSTGRES_USER'],
+                    password=current_app.config['POSTGRES_PASS'],
+                    database=current_app.config['POSTGRES_APP_DATABASE'])
+            return ctx.patabase_app_connection
 
     def add(self, table: str, **parameters: any) -> None:
         placeholders = ['%s' for _ in parameters]
