@@ -28,73 +28,22 @@ class Qedgal(object):
             return ctx.qedgal_app_connection
 
     def add(self, table: str, **parameters: any) -> None:
-        placeholders = ['%s' for _ in parameters]
-
-        sql = f'''
-            insert into {table} ({', '.join(parameters)})
-            values ({', '.join(placeholders)})
-        '''
-
-        self._db.perform(sql, *parameters.values())
+        self._db.add(table, **parameters)
 
     def edit(self, table: str, pk: int, **parameters: any) -> None:
-        fields = [f'{key} = %s' for key in parameters if parameters[key]]
-        values = [parameters[key] for key in parameters if parameters[key]]
-
-        sql = f'''
-            update {table}
-            set {', '.join(fields)}
-            where id = %s
-        '''
-
-        self._db.perform(sql, *values, pk)  # TODO: check if "pk" exists
+        self._db.edit(table, pk, **parameters)
 
     def delete(self, table: str, pk: int) -> None:
-        sql = f'''
-            delete
-            from {table}
-            where id = %s
-        '''
-
-        self._db.perform(sql, pk)  # TODO: check if "pk" exists
+        self._db.delete(table, pk)
 
     def list(self, table: str, user_id: int = None) -> list:
-        sql = f'''
-            select * 
-            from {table}_facade
-        '''
-
-        if user_id:
-            sql += f' where {user_id} = any(user_ids)'
-
-        return list(self._db.select(sql))
+        return self._db.list(table, user_id)
 
     def get(self, table: str, pk: int, user_id: int = None) -> dict:
-        sql = f'''
-            select * 
-            from {table}_facade
-            where id = %s
-        '''
-
-        if user_id:
-            sql += f' and {user_id} = any(user_ids)'
-
-        return next(self._db.select(sql, pk), dict())
+        return self._db.get(table, pk, user_id)
 
     def query(self, table: str, q: str, fields: list, user_id: int = None) -> list:
-        filters = [f"{key}::varchar like %s" for key in fields]
-        values = [f'%{q}%' for _ in fields]
-
-        sql = f'''
-            select *
-            from {table}_facade
-            where {' or '.join(filters)}
-        '''
-
-        if user_id:
-            sql += f' and {user_id} = any(user_ids)'
-
-        return list(self._db.select(sql, *values))
+        return self._db.query(table, q, fields, user_id)
 
     def perform(self, sql: str, *args: any) -> int:
         return self._db.perform(sql, *args)
