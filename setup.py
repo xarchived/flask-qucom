@@ -3,7 +3,7 @@ import re
 from setuptools import find_packages
 from setuptools import setup
 
-name = 'fedgal'
+name = 'flask-qedgal'
 owner = 'xurvan'
 
 with open(f'{name}/__init__.py') as f:
