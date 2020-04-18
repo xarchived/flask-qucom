@@ -2,7 +2,7 @@ from typing import Union
 
 # noinspection PyProtectedMember
 from flask import Blueprint, Flask, _app_ctx_stack, current_app
-from patabase import Postgres
+from qedgal import Qedgal
 
 
 class Fedgal(object):
@@ -16,16 +16,16 @@ class Fedgal(object):
         self._app = app
 
     @property
-    def _db(self) -> Postgres:
+    def _db(self) -> Qedgal:
         ctx = _app_ctx_stack.top
         if ctx is not None:
-            if not hasattr(ctx, 'patabase_app_connection'):
-                ctx.patabase_app_connection = Postgres(
+            if not hasattr(ctx, 'qedgal_app_connection'):
+                ctx.qedgal_app_connection = Qedgal(
                     host=current_app.config['POSTGRES_HOST'],
                     user=current_app.config['POSTGRES_USER'],
                     password=current_app.config['POSTGRES_PASS'],
                     database=current_app.config['POSTGRES_APP_DATABASE'])
-            return ctx.patabase_app_connection
+            return ctx.qedgal_app_connection
 
     def add(self, table: str, **parameters: any) -> None:
         placeholders = ['%s' for _ in parameters]
