@@ -6,7 +6,7 @@ from setuptools import setup
 name = 'flask-qedgal'
 owner = 'xurvan'
 
-with open(f'{name}/__init__.py') as f:
+with open(f'flask_qedgal/__init__.py') as f:
     version = re.search(r'([0-9]+(\.dev|\.|)){3}', f.read()).group(0)
 
 with open('README.md') as f:
