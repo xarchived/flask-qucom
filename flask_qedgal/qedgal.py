@@ -36,14 +36,14 @@ class Qedgal(object):
     def delete(self, table: str, pk: int) -> None:
         self._db.delete(table, pk)
 
-    def list(self, table: str, user_id: int = None) -> list:
-        return self._db.list(table, user_id)
+    def list(self, table: str, user_id: int = None, limit: int = 10, offset: int = 0) -> list:
+        return self._db.list(table, user_id, limit, offset)
 
     def get(self, table: str, pk: int, user_id: int = None) -> dict:
         return self._db.get(table, pk, user_id)
 
-    def query(self, table: str, q: str, fields: list, user_id: int = None) -> list:
-        return self._db.query(table, q, fields, user_id)
+    def query(self, table: str, q: str, fields: list, user_id: int = None, limit: int = 10, offset: int = 0) -> list:
+        return self._db.query(table, q, fields, user_id, limit, offset)
 
     def perform(self, sql: str, *args: any) -> int:
         return self._db.perform(sql, *args)
