@@ -45,6 +45,9 @@ class Qedgal(object):
     def query(self, table: str, q: str, fields: list, user_id: int = None, limit: int = 10, offset: int = 0) -> list:
         return self._db.query(table, q, fields, user_id, limit, offset)
 
+    def count(self, table: str) -> int:
+        return self._db.count(table)
+
     def perform(self, sql: str, *args: any) -> int:
         return self._db.perform(sql, *args)
 
