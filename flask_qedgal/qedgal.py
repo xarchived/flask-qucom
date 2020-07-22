@@ -48,6 +48,9 @@ class Qedgal(object):
     def calendar(self, table: str) -> list:
         return self._db.calendar(table)
 
+    def columns(self, table: str) -> list:
+        return self._db.columns(table)
+
     def count(self, table: str) -> int:
         return self._db.count(table)
 
