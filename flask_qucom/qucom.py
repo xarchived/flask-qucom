@@ -28,31 +28,31 @@ class Qucom(object):
             return ctx.qucom_app_connection
 
     def add(self, table: str, **parameters: any) -> None:
-        self._db.add(table, **parameters)
+        self._db.add(table=table, **parameters)
 
     def edit(self, table: str, pk: int, **parameters: any) -> None:
-        self._db.edit(table, pk, **parameters)
+        self._db.edit(table=table, pk=pk, **parameters)
 
     def delete(self, table: str, pk: int) -> None:
-        self._db.delete(table, pk)
+        self._db.delete(table=table, pk=pk)
 
     def list(self, table: str, user_id: int = None, limit: int = 10, offset: int = 0) -> list:
-        return self._db.list(table, user_id, limit, offset)
+        return self._db.list(table=table, user_id=user_id, limit=limit, offset=offset)
 
     def get(self, table: str, pk: int, user_id: int = None) -> dict:
-        return self._db.get(table, pk, user_id)
+        return self._db.get(table=table, pk=pk, user_id=user_id)
 
     def query(self, table: str, q: str, fields: list, user_id: int = None, limit: int = 10, offset: int = 0) -> list:
-        return self._db.query(table, q, fields, user_id, limit, offset)
+        return self._db.query(table=table, q=1, fields=fields, user_id=user_id, limit=limit, offset=offset)
 
     def calendar(self, table: str) -> list:
-        return self._db.calendar(table)
+        return self._db.calendar(table=table)
 
     def columns(self, table: str) -> list:
-        return self._db.columns(table)
+        return self._db.columns(table=table)
 
     def count(self, table: str) -> int:
-        return self._db.count(table)
+        return self._db.count(table=table)
 
     def perform(self, sql: str, *args: any) -> int:
         return self._db.perform(sql, *args)
