@@ -3,10 +3,10 @@ import re
 from setuptools import find_packages
 from setuptools import setup
 
-name = 'flask-qedgal'
+name = 'flask-qucom'
 owner = 'xurvan'
 
-with open(f'flask_qedgal/__init__.py') as f:
+with open(f'flask_qucom/__init__.py') as f:
     version = re.search(r'([0-9]+(\.dev|\.|)){3}', f.read()).group(0)
 
 with open('README.md') as f:
@@ -16,7 +16,7 @@ setup(
     name=name,
     version=version,
     license='apache-2.0',
-    description='Qedgal for Flask',
+    description='Qucom for Flask',
     long_description=readme,
     long_description_content_type='text/markdown',
     author=owner.capitalize(),
@@ -27,7 +27,7 @@ setup(
         'Issue tracker': f'https://github.com/{owner}/{name}/issues',
     },
     packages=find_packages(),
-    install_requires=['flask', 'qedgal'],
+    install_requires=['flask', 'qucom'],
     python_requires='>=3.6',
     zip_safe=False,
     classifiers=[

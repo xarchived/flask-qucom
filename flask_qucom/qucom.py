@@ -2,10 +2,10 @@ from typing import Union
 
 # noinspection PyProtectedMember
 from flask import Blueprint, Flask, _app_ctx_stack, current_app
-from qedgal import Qedgal as Database
+from qucom import Qucom as Database
 
 
-class Qedgal(object):
+class Qucom(object):
     _app: Union[Flask, Blueprint]
 
     def __init__(self, app: Union[Flask, Blueprint] = None):
@@ -19,13 +19,13 @@ class Qedgal(object):
     def _db(self) -> Database:
         ctx = _app_ctx_stack.top
         if ctx is not None:
-            if not hasattr(ctx, 'qedgal_app_connection'):
-                ctx.qedgal_app_connection = Database(
+            if not hasattr(ctx, 'qucom_app_connection'):
+                ctx.qucom_app_connection = Database(
                     host=current_app.config['POSTGRES_HOST'],
                     user=current_app.config['POSTGRES_USER'],
                     password=current_app.config['POSTGRES_PASS'],
                     database=current_app.config['POSTGRES_APP_DATABASE'])
-            return ctx.qedgal_app_connection
+            return ctx.qucom_app_connection
 
     def add(self, table: str, **parameters: any) -> None:
         self._db.add(table, **parameters)
