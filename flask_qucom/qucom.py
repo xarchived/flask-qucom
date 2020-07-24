@@ -48,8 +48,8 @@ class Qucom(object):
     def calendar(self, table: str) -> list:
         return self._db.calendar(table=table)
 
-    def columns(self, table: str) -> list:
-        return self._db.columns(table=table)
+    def columns(self, table: str, exclusion: list = None) -> list:
+        return self._db.columns(table=table, exclusion=exclusion)
 
     def count(self, table: str) -> int:
         return self._db.count(table=table)
