@@ -43,7 +43,7 @@ class Qucom(object):
         return self._db.get(table=table, pk=pk, user_id=user_id)
 
     def query(self, table: str, q: str, fields: list, user_id: int = None, limit: int = 10, offset: int = 0) -> list:
-        return self._db.query(table=table, q=1, fields=fields, user_id=user_id, limit=limit, offset=offset)
+        return self._db.query(table=table, q=q, fields=fields, user_id=user_id, limit=limit, offset=offset)
 
     def calendar(self, table: str) -> list:
         return self._db.calendar(table=table)
